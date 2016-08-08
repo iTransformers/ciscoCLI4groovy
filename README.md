@@ -49,7 +49,7 @@ If you want to do a telnet session just change the protocol and the port.
 ```
 
 
-## Send privilege mode command over ssh
+## Send privilege mode command over the already loged in session
 In this example we will demonstrate how you can send a privilege mode (15) command over ssh. 
 If you want to send it over telnet just change the protocol and the port. 
 
@@ -80,6 +80,34 @@ If you want to send it over telnet just change the protocol and the port.
 ```
             
 
-## Send a single configuration command over telnet
+## Send a single configuration command over the already loged in session
+
+```
+            cmdParams.put("evalScript", null);
+            cmdParams.put("configCommand","ip route 10.200.1.0 255.255.255.0 192.0.2.1");
+            cmdParams.put("mode", loginResult.get("mode"));
+            cmdParams.put("hostname", loginResult.get("hostname"));
+            cmdParams.putAll(params);
+            Map<String, Object> result = null;
+
+            result = launcher.sendCommand("cisco_sendConfigCommand.groovy", cmdParams);
+```
+
+## Send multipe configuration commands (configuration template) over the already loged in session
+
+```
+            cmdParams.put("mode", result.get("mode"));
+            cmdParams.put("hostname", loginResult.get("hostname"));
+
+            String configTemplate = "interface loopback 101\n" +
+                    "ip address 127.0.0.101 255.255.255.255\n" +
+                    "description useless loopback\n"+
+                    "no shutdown\n";
 
 
+            cmdParams.put("configTemplate", configTemplate);
+            cmdParams.remove("configCommand");
+
+            result = launcher.sendCommand("cisco_sendConfigCommand.groovy",cmdParams);
+
+```
