@@ -10,3 +10,76 @@ templates over telnet or ssh.
 # Usage
 
 
+## Login
+
+In this example we will demonstrate how you can login to the router in privilege mode (privilege level 15). 
+If you want to do a telnet session just change the protocol and the port. 
+
+
+```
+        Hashtable<String, String> config = new Hashtable<String, String>();
+        config.put("StrictHostKeyChecking", "no");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("protocol", "ssh");
+        params.put("username", "user");
+        params.put("password", "pass!");
+        params.put("enable-password", "pass321!");
+        params.put("address", "1.1.1.1");
+        params.put("port", 22);
+        params.put("timeout",30000);
+        params.put("config",config);
+        params.put("LOGGING_LEVEL","DEBUG");
+        params.put("prompt",">");
+        params.put("defaultTerminator","\r");
+        params.put("powerUserPrompt","#");
+        params.put("retries",2);
+
+        Expect4GroovyScriptLauncher launcher = new Expect4GroovyScriptLauncher();
+        //Try to login 
+
+        Map<String, Object> loginResult = launcher.open(new String[]{"conf/groovy/cisco/ios" + File.separator}, "cisco_login.groovy", params);
+        //Check login result
+        if (loginResult.get("status").equals(2)) {
+        //Can't login.
+            logger.debug(loginResult);
+        } else {
+        //Login sucessful send further commands. 
+        }
+```
+
+
+## Send privilege mode command over ssh
+In this example we will demonstrate how you can send a privilege mode (15) command over ssh. 
+If you want to send it over telnet just change the protocol and the port. 
+
+```java
+        
+            //Assuming that the login has already happen and we want to send a single privilege mode command. In this case this will be "show running-config"
+            
+            Map<String, Object> cmdParams = new LinkedHashMap<String, Object>();            
+           
+            cmdParams.put("command", "show running-config");
+            cmdParams.put("mode", loginResult.get("mode"));
+
+            result = launcher.sendCommand("cisco_sendCommand.groovy",cmdParams);
+            //Check the command execution result 
+            if(result.get("status").equals(1)){
+            //Success check the response of the command. For examle in this case the "data" will be the output of\"show run" command"
+            //Or the error produced during the execution of it.
+                System.out.println(result.get("data"));
+                
+            }else{
+            
+                System.out.println("Command has not been executed sucessfully!!!: "+result.get("data"));
+                System.out.println("ReportResult"+result.get("reportResult"));
+                System.out.println("EvalResult"+result.get("evalResult"));
+
+            }
+            
+```
+            
+
+## Send a single configuration command over telnet
+
+
