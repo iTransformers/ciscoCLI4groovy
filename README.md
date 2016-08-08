@@ -1,4 +1,5 @@
 # ciscoCLI4groovy
+
 Cisco CLI generic command executors
 
 #About 
@@ -49,7 +50,7 @@ If you want to do a telnet session just change the protocol and the port.
 ```
 
 
-## Send privilege mode command over the already loged in session
+## Send privilege mode command over the already logged in session
 In this example we will demonstrate how you can send a privilege mode (15) command over ssh. 
 If you want to send it over telnet just change the protocol and the port. 
 
@@ -80,7 +81,7 @@ If you want to send it over telnet just change the protocol and the port.
 ```
             
 
-## Send a single configuration command over the already loged in session
+## Send a single configuration command over the already logged in session
 
 ```
             cmdParams.put("evalScript", null);
@@ -93,7 +94,7 @@ If you want to send it over telnet just change the protocol and the port.
             result = launcher.sendCommand("cisco_sendConfigCommand.groovy", cmdParams);
 ```
 
-## Send multipe configuration commands (configuration template) over the already loged in session
+## Send multiple configuration commands (configuration template) over the already logged in session
 
 ```
             cmdParams.put("mode", result.get("mode"));
