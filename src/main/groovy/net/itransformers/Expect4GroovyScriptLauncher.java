@@ -64,7 +64,7 @@ public class Expect4GroovyScriptLauncher {
 
         Expect4GroovyScriptLauncher launcher = new Expect4GroovyScriptLauncher();
 
-        Map<String, Object> loginResult = launcher.open(new String[]{"ciscocli4groovy/conf/groovy/cisco/ios" + File.separator}, "cisco_login.groovy", params);
+        Map<String, Object> loginResult = launcher.open(new String[]{"conf/groovy/cisco/ios" + File.separator}, "cisco_login.groovy", params);
 
 
         if (loginResult.get("status").equals(2)) {
@@ -109,7 +109,7 @@ public class Expect4GroovyScriptLauncher {
             cmdParams.put("command", "show running-config");
             cmdParams.put("mode", result.get("mode"));
 
-            cmdParams.put("evalScript","ciscocli4groovy/conf/groovy/cisco/ios/cisco_config_eval.groovy");
+            cmdParams.put("evalScript","conf/groovy/cisco/ios/cisco_config_eval.groovy");
 
             result = launcher.sendCommand("cisco_sendCommand.groovy",cmdParams);
             if(result.get("status").equals(1)){
