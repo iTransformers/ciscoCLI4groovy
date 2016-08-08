@@ -41,6 +41,8 @@ public class Expect4GroovyScriptLauncher {
     CLIConnection connection;
     GroovyScriptEngine gse;
     static Logger logger = Logger.getLogger(Expect4GroovyScriptLauncher.class);
+    private static Status status;
+
 
     public static void main(String[] args) throws IOException, ResourceException, ScriptException,RuntimeException {
 

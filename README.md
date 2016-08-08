@@ -17,7 +17,7 @@ In this example we will demonstrate how you can login to the router in privilege
 If you want to do a telnet session just change the protocol and the port. 
 
 
-```
+```java
         Hashtable<String, String> config = new Hashtable<String, String>();
         config.put("StrictHostKeyChecking", "no");
 
@@ -83,7 +83,7 @@ If you want to send it over telnet just change the protocol and the port.
 
 ## Send a single configuration command over the already logged in session
 
-```
+```java
             cmdParams.put("evalScript", null);
             cmdParams.put("configCommand","ip route 10.200.1.0 255.255.255.0 192.0.2.1");
             cmdParams.put("mode", loginResult.get("mode"));
@@ -96,7 +96,7 @@ If you want to send it over telnet just change the protocol and the port.
 
 ## Send multiple configuration commands (configuration template) over the already logged in session
 
-```
+```java
             cmdParams.put("mode", result.get("mode"));
             cmdParams.put("hostname", loginResult.get("hostname"));
 
