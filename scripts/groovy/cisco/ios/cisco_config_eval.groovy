@@ -1,3 +1,5 @@
+package cisco.ios
+
 import net.itransformers.expect4java.ExpectContext
 
 status = ["success": 1, "failure": 2]
