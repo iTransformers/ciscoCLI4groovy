@@ -7,8 +7,12 @@ Cisco CLI generic command executors
 This is a groovy expect wrapper of Cisco IOS CLI interface. It allows you to automate in groovy, java 
 and jvm kind of programing languages the communication with Cisco IOS routers and switches.
 
-The library allows your application to send CLI commands in privilege and config terminal modes and also to apply configuration 
-templates over telnet or ssh without the need of specific command parsing. 
+The library allows your application to send CLI commands in privilege and config terminal modes and also to apply
+configuration templates over telnet or ssh without the need of specific command parsing. 
+
+As a difference to many other such expect attempts (either open or close source) our attempt is generic so you can
+send any command in any device mode without taking too much care on what the output will be, which symbols should be 
+expected or how exactly to send the actual command or commands template. 
 
 # Usage
 
