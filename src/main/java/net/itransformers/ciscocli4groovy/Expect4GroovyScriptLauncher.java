@@ -46,16 +46,17 @@ public class Expect4GroovyScriptLauncher {
 
     public static void main(String[] args) throws IOException, ResourceException, ScriptException,RuntimeException {
 
+
         Hashtable<String, String> config = new Hashtable<String, String>();
         config.put("StrictHostKeyChecking", "no");
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("protocol", "telnet");
+        params.put("protocol", "ssh");
         params.put("username", "nbu");
         params.put("password", "nbu321!");
         params.put("enable-password", "nbu321!");
         params.put("address", "193.19.175.129");
-        params.put("port", 23);
+        params.put("port", 22);
         params.put("timeout",30000);
         params.put("config",config);
         params.put("LOGGING_LEVEL","DEBUG");
@@ -69,7 +70,7 @@ public class Expect4GroovyScriptLauncher {
         Map<String, Object> loginResult = launcher.open(new String[]{"scripts/groovy/cisco/ios" + File.separator}, "cisco_login.groovy", params);
 
 
-        if (loginResult.get("status").equals(2)) {
+        if (loginResult.get("status") == Status.failure) {
             logger.debug(loginResult);
         } else {
             Map<String, Object> cmdParams = new LinkedHashMap<String, Object>();
@@ -82,7 +83,7 @@ public class Expect4GroovyScriptLauncher {
 
             result = launcher.sendCommand("cisco_sendConfigCommand.groovy", cmdParams);
 
-            if(result.get("status").equals(1)){
+            if(result.get("status")==Status.success){
                 System.out.println(result.get("data"));
             }else{
                 System.out.println(result.get("data"));
@@ -101,7 +102,7 @@ public class Expect4GroovyScriptLauncher {
 
             result = launcher.sendCommand("cisco_sendConfigCommand.groovy",cmdParams);
 
-            if(result.get("status").equals(1)){
+            if(result.get("status")==Status.success){
                 System.out.println(result.get("data"));
             }else{
                 System.out.println("Config Template Failure: "+result.get("data"));
@@ -114,7 +115,7 @@ public class Expect4GroovyScriptLauncher {
             cmdParams.put("evalScript","scripts/groovy/cisco/ios/cisco_config_eval.groovy");
 
             result = launcher.sendCommand("cisco_sendCommand.groovy",cmdParams);
-            if(result.get("status").equals(1)){
+            if(result.get("status")==Status.success){
                 System.out.println(result.get("data"));
             }else{
                 System.out.println("Command has not been executed sucessfully!!!: "+result.get("data"));

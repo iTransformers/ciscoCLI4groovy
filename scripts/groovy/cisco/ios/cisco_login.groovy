@@ -236,22 +236,38 @@ def login() {
 
 
 def user() {
-    def returnFlag = status["failure"];
+    def returnStatus = status["failure"];
+    int i = 0;
+    int timeout=params.get("timeout");
+    int retries=params.get("retries");
+    while (i < retries && returnStatus!=status["success"]) {
+        i++;
 
-    expect _re("Username:|User:") {
-        send params["username"] + defaultTerminator
-        returnFlag = status["success"]
+        expect  ([
+                _timeout(timeout){
+                    returnStatus=status["timeout"];
+                },
+                _re("Username:|User:") {
 
-        if (params["protocol"]=='telnet'){
-            expect _re(params["username"]+"\r\n"){
 
-                println("----------Expect echo username----------")
+                    send params["username"] + defaultTerminator
+                    returnStatus = status["success"]
 
-            }
-        }
+                    if (params["protocol"] == 'telnet') {
+                        expect _re(params["username"] + "\r\n") {
+
+                            println("----------Expect echo username----------")
+
+                        }
+                    }
+                }
+
+                ]);
+        timeout=timeout+100;
+
     }
 
-    return returnFlag;
+    return returnStatus;
 
 }
 
