@@ -62,6 +62,13 @@ if (command!=null && command !="") {
             result = ["status": status["failure"], "data": "Can't enter in privilege mode from config mode","mode": mode];
             return result;
         }
+    }else if(mode == modes["logedInPrivilege15Mode"]) {
+
+        result = sendCommand(command,evalScript);
+         return result;
+    }  else {
+        result = ["status": status["failure"], "data": "Not in the right configuration mode","mode": mode];
+
     }
 
 }

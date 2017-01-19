@@ -22,7 +22,8 @@ import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
-import net.itransformers.expect4groovy.Expect4Groovy;import net.itransformers.expect4java.cliconnection.CLIConnection;
+import net.itransformers.expect4groovy.Expect4Groovy;
+import net.itransformers.expect4java.cliconnection.CLIConnection;
 import net.itransformers.expect4java.cliconnection.impl.EchoCLIConnection;
 import net.itransformers.expect4java.cliconnection.impl.RawSocketCLIConnection;
 import net.itransformers.expect4java.cliconnection.impl.SshCLIConnection;
@@ -31,16 +32,16 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.Object;import java.lang.RuntimeException;import java.lang.String;import java.lang.System;import java.util.HashMap;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Expect4GroovyScriptLauncher {
+public class ExecuteSingleConfigurationCommand {
     Binding binding;
     CLIConnection connection;
     GroovyScriptEngine gse;
-    static Logger logger = Logger.getLogger(Expect4GroovyScriptLauncher.class);
+    static Logger logger = Logger.getLogger(ExecuteSingleConfigurationCommand.class);
     private static Status status;
 
 
@@ -65,7 +66,7 @@ public class Expect4GroovyScriptLauncher {
         params.put("powerUserPrompt","#");
         params.put("retries",2);
 
-        Expect4GroovyScriptLauncher launcher = new Expect4GroovyScriptLauncher();
+        ExecuteSingleConfigurationCommand launcher = new ExecuteSingleConfigurationCommand();
 
         Map<String, Object> loginResult = launcher.open(new String[]{"scripts/groovy/cisco/ios" + File.separator}, "cisco_login.groovy", params);
 
@@ -88,45 +89,9 @@ public class Expect4GroovyScriptLauncher {
             }else{
                 System.out.println(result.get("data"));
             }
-            cmdParams.put("mode", result.get("mode"));
-            cmdParams.put("hostname", loginResult.get("hostname"));
 
-            String configTemplate = "interface loopback 101\n" +
-                    "ip address 127.0.0.101 255.255.255.255\n" +
-                    "description useless loopback\n"+
-                    "no shutdown\n";
-
-
-            cmdParams.put("configTemplate", configTemplate);
-            cmdParams.remove("configCommand");
-
-            result = launcher.sendCommand("cisco_sendConfigCommand.groovy",cmdParams);
-
-            if(result.get("status")==Status.success){
-                System.out.println(result.get("data"));
-            }else{
-                System.out.println("Config Template Failure: "+result.get("data"));
-            }
-
-            cmdParams.remove("configTempate");
-            cmdParams.put("command", "show running-config");
-            cmdParams.put("mode", result.get("mode"));
-
-            cmdParams.put("evalScript","scripts/groovy/cisco/ios/cisco_config_eval.groovy");
-
-            result = launcher.sendCommand("cisco_sendCommand.groovy",cmdParams);
-            if(result.get("status")==Status.success){
-                System.out.println(result.get("data"));
-            }else{
-                System.out.println("Command has not been executed sucessfully!!!: "+result.get("data"));
-                System.out.println("ReportResult"+result.get("reportResult"));
-                System.out.println("EvalResult"+result.get("evalResult"));
-
-            }
 
             params.put("mode", result.get("mode"));
-
-
 
 
             result = launcher.close("cisco_logout.groovy", params);
